@@ -17,6 +17,17 @@ var selectAll = function(callback) {
   });
 };
 
+var selectDone = function(callback) {
+  connection.query('SELECT * FROM todo WHERE completed = true', function(err, res) {
+    if(err) {
+      console.log('error in selectDone', err)
+      callback(err)
+    } else {
+      callback(null, res)
+    }
+  })
+};
+
 var addTask = function(callback, task, cat, completed) {
   connection.query(`Insert into todo(task,cat,completed) Values ("${task}","${cat}", ${completed})`, function(err, results) {
     if(err) {
@@ -26,9 +37,10 @@ var addTask = function(callback, task, cat, completed) {
       callback(null, results)
     }
   })
-}
+};
 
 module.exports = {
   selectAll,
   addTask,
+  selectDone,
 }

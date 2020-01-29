@@ -27,6 +27,13 @@ app.get('/items', function (req, res) {
 app.get('/completed', function (req, res) {
   //eventually get user num
   //call items method to query db for all tasks matching user and comp === true
+  items.selectDone(function (err, data) {
+    if(err) {
+      res.sendStatus(500)
+    } else {
+      res.json(data)
+    }
+  })
 });
 
 app.post('/', function(req,res) {
