@@ -1,14 +1,28 @@
-DROP DATABASE IF EXISTS test;
+DROP DATABASE IF EXISTS todos;
 
-CREATE DATABASE test;
+CREATE DATABASE todos;
 
-USE test;
+USE todos;
 
-CREATE TABLE items (
+CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
-  quantity integer NOT NULL,
-  description varchar(50) NOT NULL,
+  user varchar(50) NOT NULL,
   PRIMARY KEY (ID)
+);
+
+CREATE TABLE todo (
+  id int NOT NULL AUTO_INCREMENT,
+  task varchar(255) NOT NULL,
+  cat varchar(125),
+  completed BOOLEAN NOT NULL,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+  userID int,
+  FOREIGN KEY (userID)
+    REFERENCES users(id)
+    ON DELETE CASCADE,
+  PRIMARY KEY (id)
 );
 
 /*  Execute this file from the command line by typing:
