@@ -56,14 +56,31 @@ app.post('/', function(req,res) {
 app.put('/', function(req,res) {
   //need user number
   //way to id existing task- id of todo table
-  //call items method to update task with new val
+  //call items method to update task with new val (add way to update cat & comp in future)
+  let id = req.body.id;
+  console.log(typeof id)
+  let task = req.body.task
+  items.updateTask(id, task, function(err, data) {
+    if(err) {
+      res.sendStatus(500)
+    } else {
+      res.send(data)
+    }
+  })
   //make sure change is visable to user
 });
 
 app.delete('/', function(req,res) {
   //need user number
   //id task to remove - id of todo table
-  //call items method to delete task
+  let id = req.body.id;
+  items.removeTask(id, function (err, data) {
+    if (err) {
+      res.sendStatus(500)
+    } else {
+      res.send(data)
+    }
+  })
   //make sure change is visable to user
 })
 

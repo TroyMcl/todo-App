@@ -39,8 +39,32 @@ var addTask = function(callback, task, cat, completed) {
   })
 };
 
+var updateTask = function(id, task, callback) {
+  connection.query(`UPDATE todo SET task = "${task}" WHERE id=${id}`, function (err, res) {
+    if (err) {
+      console.log(err)
+      callback(err)
+    } else {
+      callback(null, res)
+    }
+  })
+};
+
+var removeTask = function(id, callback) {
+  connection.query(`DELETE from todo WHERE id=${id}`, function (err, res) {
+    if (err) {
+      console.log(err)
+      callback(err)
+    } else {
+      callback(null, res)
+    }
+  })
+}
+
 module.exports = {
   selectAll,
   addTask,
   selectDone,
+  updateTask,
+  removeTask,
 }
