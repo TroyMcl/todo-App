@@ -1,9 +1,9 @@
 import React from 'react';
 
 const ListItem = (props) => (
-  <div>
-    { props.item.description }
-  </div>
+  <li>
+    { props.item.task }
+  </li>
 )
 
 export default ListItem;

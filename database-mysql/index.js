@@ -34,7 +34,15 @@ var addTask = function(callback, task, cat, completed) {
       console.log('error in insert', err)
       callback(err)
     } else {
-      callback(null, results)
+      let newId = results.insertId;
+      connection.query(`SELECT * FROM todo WHERE id=${newId}`, function(err, res) {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, res)
+        }
+      })
+
     }
   })
 };
@@ -66,5 +74,5 @@ module.exports = {
   addTask,
   selectDone,
   updateTask,
-  removeTask,
+  removeTask
 }

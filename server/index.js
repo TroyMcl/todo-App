@@ -39,9 +39,11 @@ app.get('/completed', function (req, res) {
 app.post('/', function(req,res) {
   //need user number - keep in react state
   console.log(req.body)
-  let task = req.body.task;
-  let cat = req.body.cat;
-  let comp = req.body.comp;
+  let task = req.body.value;
+  //let cat = req.body.cat;
+  let cat = 'stuff';
+  //let comp = req.body.comp;
+  let comp = false;
   //call items method to write new to do into db
   items.addTask(function (err, data) {
     if(err) {

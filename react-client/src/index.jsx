@@ -32,6 +32,9 @@ class App extends React.Component {
       data: task,
       success: (res => {
         console.log(res)
+        this.setState({
+          tasks: this.state.tasks.concat(res)
+        })
       }),
       dataType: 'JSON',
     })
@@ -44,7 +47,7 @@ class App extends React.Component {
       success: (data) => {
         console.log(data)
         this.setState({
-          items: data
+          tasks: data
         })
       },
       error: (err) => {
