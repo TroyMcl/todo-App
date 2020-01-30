@@ -6,7 +6,7 @@ const List = (props) => (
     <h4> List Component </h4>
     There are { props.items.length } items on your todo list.
     <ul>
-    { props.items.map(item => <ListItem item={item}/>)}
+    { props.items.map(item => <ListItem item={item} remove={props.remove}/>)}
     </ul>
   </div>
 )

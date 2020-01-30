@@ -1,8 +1,8 @@
 import React from 'react';
 
 const ListItem = (props) => (
-  <li>
-    { props.item.task }
+  <li onClick={props.remove}>
+    {props.item.task } {props.item.cat}
   </li>
 )
 

@@ -13,6 +13,7 @@ class App extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
   }
 
   handleChange(event) {
@@ -21,7 +22,7 @@ class App extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    //run POST add new event to db
+    //run POST add new event to db & update state
     let task = {value: this.state.value}
     task = JSON.stringify(task)
     console.log(task)
@@ -38,7 +39,29 @@ class App extends React.Component {
       }),
       dataType: 'JSON',
     })
-    //need to add new task to tasks array
+  }
+
+  deleteTask(event) {
+    console.log(event.target.textContent)
+    let remove = event.target.textContent;
+    let findTask = (obj) => `${obj.task} ${obj.cat}` === remove
+    let index = this.state.tasks.findIndex(findTask)
+    $.ajax({
+      type:'DELETE',
+      url: '/',
+      headers: {'Content-type' : 'application/json'},
+      data: JSON.stringify(this.state.tasks[index]),
+      success: (res => {
+        this.setState({
+          tasks: res
+        })
+      }),
+      dataType: 'JSON',
+    })
+
+    console.log(index)
+    //get value of task - send it to server to remove from db
+    //set state to that new array
   }
 
   componentDidMount() {
@@ -67,7 +90,7 @@ class App extends React.Component {
       </label>
       <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>
-      <List items={this.state.tasks}/>
+      <List items={this.state.tasks} remove={this.deleteTask}/>
     </div>)
   }
 }

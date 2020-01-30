@@ -80,7 +80,13 @@ app.delete('/', function(req,res) {
     if (err) {
       res.sendStatus(500)
     } else {
-      res.send(data)
+      items.selectAll(function(err, data) {
+        if(err) {
+          res.sendStatus(500);
+        } else {
+          res.json(data);
+        }
+      });
     }
   })
   //make sure change is visable to user
