@@ -42,9 +42,10 @@ class App extends React.Component {
   }
 
   deleteTask(event) {
-    console.log(event.target.textContent)
-    let remove = event.target.textContent;
-    let findTask = (obj) => `${obj.task} ${obj.cat}` === remove
+    let element = event.target
+    console.log(element.dataset.str)
+    let remove = element.dataset.str;
+    let findTask = (obj) => `${obj.task}` === remove
     let index = this.state.tasks.findIndex(findTask)
     $.ajax({
       type:'DELETE',
@@ -58,10 +59,6 @@ class App extends React.Component {
       }),
       dataType: 'JSON',
     })
-
-    console.log(index)
-    //get value of task - send it to server to remove from db
-    //set state to that new array
   }
 
   componentDidMount() {
