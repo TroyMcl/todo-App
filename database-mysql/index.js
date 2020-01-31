@@ -53,7 +53,32 @@ var updateTask = function(id, task, callback) {
       console.log(err)
       callback(err)
     } else {
-      callback(null, res)
+      connection.query(`SELECT * FROM todo`, function(error, response) {
+        if (error) {
+          console.log(error)
+          callback(error)
+        } else {
+          callback(null, response)
+        }
+      })
+    }
+  })
+};
+
+var updateCat = function(id, cat, callback) {
+  connection.query(`UPDATE todo SET cat = "${cat}" WHERE id=${id}`, function (err, res) {
+    if (err) {
+      console.log(err)
+      callback(err)
+    } else {
+      connection.query(`SELECT * FROM todo`, function(error, response) {
+        if (error) {
+          console.log(error)
+          callback(error)
+        } else {
+          callback(null, response)
+        }
+      })
     }
   })
 };
@@ -74,5 +99,6 @@ module.exports = {
   addTask,
   selectDone,
   updateTask,
-  removeTask
+  removeTask,
+  updateCat,
 }

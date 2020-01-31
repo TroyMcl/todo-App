@@ -10,10 +10,14 @@ class App extends React.Component {
       user: 'Mr. Test',
       tasks: [],
       value: '',
+      focusedValue: '',
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.taskEdit = this.taskEdit.bind(this);
+    this.focusOn = this.focusOn.bind(this);
+    this.catEdit = this.catEdit.bind(this);
   }
 
   handleChange(event) {
@@ -61,6 +65,57 @@ class App extends React.Component {
     })
   }
 
+  focusOn(text) {
+    console.log('text before editing', text)
+    this.setState({
+      focusedValue: text
+    })
+  }
+
+  getId(e) {
+    e.preventDefault();
+    let task = e.target.dataset.tsk
+    console.log(task)
+  }
+
+  taskEdit(data) {
+    let findTask = (obj) => `${obj.task}` === this.state.focusedValue;
+    let index = this.state.tasks.findIndex(findTask)
+    let updateTask = { id: this.state.tasks[index].id, task: data }
+    console.log(updateTask)
+    $.ajax({
+      type:'PUT',
+      url: '/task',
+      headers: {'Content-type' : 'application/json'},
+      data: JSON.stringify(updateTask),
+      success: (res => {
+        this.setState({
+          tasks: res
+        })
+      }),
+      dataType: 'JSON',
+    })
+  }
+
+  catEdit(data) {
+    let findTask = (obj) => `${obj.cat}` === this.state.focusedValue;
+    let index = this.state.tasks.findIndex(findTask)
+    let updateTask = { id: this.state.tasks[index].id, cat: data }
+    console.log(updateTask)
+    $.ajax({
+      type:'PUT',
+      url: '/cat',
+      headers: {'Content-type' : 'application/json'},
+      data: JSON.stringify(updateTask),
+      success: (res => {
+        this.setState({
+          tasks: res
+        })
+      }),
+      dataType: 'JSON',
+    })
+  }
+
   componentDidMount() {
     $.ajax({
       url: '/items',
@@ -87,7 +142,7 @@ class App extends React.Component {
       </label>
       <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>
-      <List items={this.state.tasks} remove={this.deleteTask}/>
+      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit}/>
     </div>)
   }
 }

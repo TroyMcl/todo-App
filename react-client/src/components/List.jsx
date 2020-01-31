@@ -12,7 +12,7 @@ const List = (props) => (
         <td>Catagory</td>
         <td>Completed</td>
       </tr>
-      {props.items.map(item => <ListItem item={item} remove={props.remove}/>)}
+      {props.items.map(item => <ListItem item={item} remove={props.remove} taskEdit={props.taskEdit} focusOn={props.focusOn} catEdit={props.catEdit}/>)}
     </tbody>
   </div>
 )

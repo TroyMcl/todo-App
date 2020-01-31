@@ -37,14 +37,9 @@ app.get('/completed', function (req, res) {
 });
 
 app.post('/', function(req,res) {
-  //need user number - keep in react state
-  console.log(req.body)
   let task = req.body.value;
-  //let cat = req.body.cat;
   let cat = 'stuff';
-  //let comp = req.body.comp;
   let comp = false;
-  //call items method to write new to do into db
   items.addTask(function (err, data) {
     if(err) {
       res.sendStatus(500)
@@ -52,15 +47,10 @@ app.post('/', function(req,res) {
       res.json(data)
     }
   }, task, cat, comp)
-  //be sure change is visable to user
 });
 
-app.put('/', function(req,res) {
-  //need user number
-  //way to id existing task- id of todo table
-  //call items method to update task with new val (add way to update cat & comp in future)
+app.put('/task', function(req,res) {
   let id = req.body.id;
-  console.log(typeof id)
   let task = req.body.task
   items.updateTask(id, task, function(err, data) {
     if(err) {
@@ -69,12 +59,21 @@ app.put('/', function(req,res) {
       res.send(data)
     }
   })
-  //make sure change is visable to user
+});
+
+app.put('/cat', function(req,res) {
+  let id = req.body.id;
+  let cat = req.body.cat
+  items.updateCat(id, cat, function(err, data) {
+    if(err) {
+      res.sendStatus(500)
+    } else {
+      res.send(data)
+    }
+  })
 });
 
 app.delete('/', function(req,res) {
-  //need user number
-  //id task to remove - id of todo table
   let id = req.body.id;
   items.removeTask(id, function (err, data) {
     if (err) {
@@ -89,7 +88,6 @@ app.delete('/', function(req,res) {
       });
     }
   })
-  //make sure change is visable to user
 })
 
 app.listen(3000, function() {
