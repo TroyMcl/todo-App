@@ -18,6 +18,7 @@ var selectAll = function(callback) {
 };
 
 var findUser = function(user, callback) {
+  let info = {}
   connection.query(`insert into users(user) select "${user}" from dual where not exists (select * from users where user="${user}")`, function(err, result) {
     if(err) {
       console.log(err)
@@ -28,11 +29,30 @@ var findUser = function(user, callback) {
           if (error) {
             callback(error)
           } else {
-            callback(null, {id: res[0].id})
+            console.log('getting user id num', res[0].id, res)
+            info.id = res[0].id
+            let id = res[0].id
+            connection.query(`Select * from todo where userID="${id}"`, function (err, res) {
+              if (err) {
+                callback(err)
+              } else {
+                info.tasks = res;
+                callback(null, info)
+              }
+            })
           }
         })
       } else {
-        callback(null, {id: result.insertId})
+        info.id = result.insertId;
+        let id = result.insertId;
+        connection.query(`Select * from todo where userID="${id}"`, function (err, res) {
+          if (err) {
+            callback(err)
+          } else {
+            info.tasks = res;
+            callback(null, info)
+          }
+        })
       }
     }
   })

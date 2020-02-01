@@ -34,15 +34,16 @@ class App extends React.Component {
     e.preventDefault();
     let userName = { user: this.state.user };
     let stuff = JSON.stringify(userName)
-    console.log(stuff)
     $.ajax({
       type:'POST',
       url: '/user',
       headers: { 'Content-type' : 'application/json'},
       data: stuff,
       success: (res => {
+        console.log(res.tasks)
         this.setState({
-          userId: res.id
+          userId: res.id,
+          tasks: res.tasks
         })
       }),
       dataType: 'JSON',
@@ -54,7 +55,6 @@ class App extends React.Component {
   }
 
   handleChangeCat(event) {
-    console.log(event.target.value)
     this.setState({
       catValue: event.target.value
     })
@@ -166,21 +166,6 @@ class App extends React.Component {
       }),
       dataType: 'JSON',
     })
-  }
-
-  componentDidMount() {
-    $.ajax({
-      url: '/items',
-      success: (data) => {
-        console.log(data)
-        this.setState({
-          tasks: data
-        })
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
   }
 
   render () {
