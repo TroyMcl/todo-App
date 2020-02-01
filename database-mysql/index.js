@@ -83,6 +83,24 @@ var updateCat = function(id, cat, callback) {
   })
 };
 
+var updateCompleted = function(id, comp, callback) {
+  connection.query(`UPDATE todo SET completed = "${comp}" WHERE id=${id}`, function (err, res) {
+    if (err) {
+      console.log(err)
+      callback(err)
+    } else {
+      connection.query(`SELECT * FROM todo`, function(error, response) {
+        if (error) {
+          console.log(error)
+          callback(error)
+        } else {
+          callback(null, response)
+        }
+      })
+    }
+  })
+};
+
 var removeTask = function(id, callback) {
   connection.query(`DELETE from todo WHERE id=${id}`, function (err, res) {
     if (err) {
@@ -101,4 +119,5 @@ module.exports = {
   updateTask,
   removeTask,
   updateCat,
+  updateCompleted,
 }

@@ -20,6 +20,7 @@ class App extends React.Component {
     this.taskEdit = this.taskEdit.bind(this);
     this.focusOn = this.focusOn.bind(this);
     this.catEdit = this.catEdit.bind(this);
+    this.toggleComp = this.toggleComp.bind(this);
   }
 
   handleChange(event) {
@@ -119,6 +120,28 @@ class App extends React.Component {
     })
   }
 
+  toggleComp(event) {
+    let element = event.target
+    let task = element.dataset.comp;
+    let findTask = (obj) => `${obj.task}` === task;
+    let index = this.state.tasks.findIndex(findTask);
+    let currCompStatus = this.state.tasks[index].completed;
+    let data =  currCompStatus === 1 ? 0 : 1
+    let updateCompleted = { id: this.state.tasks[index].id, comp: data }
+    $.ajax({
+      type:'PUT',
+      url: '/completed',
+      headers: {'Content-type' : 'application/json'},
+      data: JSON.stringify(updateCompleted),
+      success: (res => {
+        this.setState({
+          tasks: res
+        })
+      }),
+      dataType: 'JSON',
+    })
+  }
+
   componentDidMount() {
     $.ajax({
       url: '/items',
@@ -149,7 +172,7 @@ class App extends React.Component {
       </label>
       <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>
-      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit} />
+      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit} toggleComp={this.toggleComp}/>
     </div>)
   }
 }

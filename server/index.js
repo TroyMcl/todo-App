@@ -73,6 +73,18 @@ app.put('/cat', function(req,res) {
   })
 });
 
+app.put('/completed', function(req,res) {
+  let id = req.body.id;
+  let comp = req.body.comp;
+  items.updateCompleted(id, comp, function(err, data) {
+    if(err) {
+      res.sendStatus(500)
+    } else {
+      res.send(data)
+    }
+  })
+});
+
 app.delete('/', function(req,res) {
   let id = req.body.id;
   items.removeTask(id, function (err, data) {

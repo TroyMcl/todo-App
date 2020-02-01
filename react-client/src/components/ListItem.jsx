@@ -19,7 +19,9 @@ const ListItem = (props) => (
         change={props.catEdit}
       />
     </td>
-    <td>{props.item.completed === 1 ? 'Yes' : 'Not Yet' }</td>
+    <td data-comp={props.item.task} onClick={props.toggleComp}>
+      {props.item.completed === 1 ? 'Yes' : 'Not Yet' }
+      </td>
   </tr>
 )
 
