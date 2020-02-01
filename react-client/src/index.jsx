@@ -72,12 +72,6 @@ class App extends React.Component {
     })
   }
 
-  getId(e) {
-    e.preventDefault();
-    let task = e.target.dataset.tsk
-    console.log(task)
-  }
-
   taskEdit(data) {
     let findTask = (obj) => `${obj.task}` === this.state.focusedValue;
     let index = this.state.tasks.findIndex(findTask)
@@ -98,9 +92,12 @@ class App extends React.Component {
   }
 
   catEdit(data) {
-    let findTask = (obj) => `${obj.cat}` === this.state.focusedValue;
+    let info = Object.entries(data)
+    let task = info[0][0];
+    let newCat = info[0][1]
+    let findTask = (obj) => `${obj.task}` === task;
     let index = this.state.tasks.findIndex(findTask)
-    let updateTask = { id: this.state.tasks[index].id, cat: data }
+    let updateTask = { id: this.state.tasks[index].id, cat: newCat }
     console.log(updateTask)
     $.ajax({
       type:'PUT',
@@ -142,7 +139,7 @@ class App extends React.Component {
       </label>
       <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>
-      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit}/>
+      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit} />
     </div>)
   }
 }
