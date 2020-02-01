@@ -47,23 +47,25 @@ app.get('/completed', function (req, res) {
   })
 });
 
-app.post('/', function(req,res) {
+app.post('/add', function(req,res) {
   let task = req.body.value;
   let cat = req.body.cat;
+  let user = req.body.user;
   let comp = false;
-  items.addTask(function (err, data) {
+  items.addTask(task, cat, comp, user, function (err, data) {
     if(err) {
       res.sendStatus(500)
     } else {
       res.json(data)
     }
-  }, task, cat, comp)
+  })
 });
 
 app.put('/task', function(req,res) {
   let id = req.body.id;
-  let task = req.body.task
-  items.updateTask(id, task, function(err, data) {
+  let task = req.body.task;
+  let user = req.body.user;
+  items.updateTask(id, task, user, function(err, data) {
     if(err) {
       res.sendStatus(500)
     } else {
@@ -74,8 +76,9 @@ app.put('/task', function(req,res) {
 
 app.put('/cat', function(req,res) {
   let id = req.body.id;
-  let cat = req.body.cat
-  items.updateCat(id, cat, function(err, data) {
+  let cat = req.body.cat;
+  let user = req.body.user
+  items.updateCat(id, cat, user, function(err, data) {
     if(err) {
       res.sendStatus(500)
     } else {
@@ -87,7 +90,8 @@ app.put('/cat', function(req,res) {
 app.put('/completed', function(req,res) {
   let id = req.body.id;
   let comp = req.body.comp;
-  items.updateCompleted(id, comp, function(err, data) {
+  let user = req.body.user;
+  items.updateCompleted(id, comp, user, function(err, data) {
     if(err) {
       res.sendStatus(500)
     } else {
@@ -98,11 +102,12 @@ app.put('/completed', function(req,res) {
 
 app.delete('/', function(req,res) {
   let id = req.body.id;
+  let user = req.body.user;
   items.removeTask(id, function (err, data) {
     if (err) {
       res.sendStatus(500)
     } else {
-      items.selectAll(function(err, data) {
+      items.selectAll(user,function(err, data) {
         if(err) {
           res.sendStatus(500);
         } else {

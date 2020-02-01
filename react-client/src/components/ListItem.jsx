@@ -4,7 +4,7 @@ import InlineEdit from 'react-edit-inline';
 
 const ListItem = (props) => (
   <tr>
-    <td data-str={props.item.task} onClick={props.remove}>X</td>
+    <td id="task_cell" data-str={props.item.task} onClick={props.remove}>X</td>
     <td>
       <EditableLabel
         text={props.item.task}

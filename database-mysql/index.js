@@ -7,8 +7,8 @@ var connection = mysql.createConnection({
   database : 'todos'
 });
 
-var selectAll = function(callback) {
-  connection.query('SELECT * FROM todo', function(err, results, fields) {
+var selectAll = function(user, callback) {
+  connection.query(`SELECT * FROM todo where userID = "${user}"`, function(err, results, fields) {
     if(err) {
       callback(err, null);
     } else {
@@ -69,8 +69,8 @@ var selectDone = function(callback) {
   })
 };
 
-var addTask = function(callback, task, cat, completed) {
-  connection.query(`Insert into todo(task,cat,completed,userID) Values ("${task}","${cat}", ${completed}, 1)`, function(err, results) {
+var addTask = function(task, cat, completed, user, callback) {
+  connection.query(`Insert into todo(task,cat,completed,userID) Values ("${task}","${cat}", ${completed}, "${user}")`, function(err, results) {
     if(err) {
       console.log('error in insert', err)
       callback(err)
@@ -88,13 +88,13 @@ var addTask = function(callback, task, cat, completed) {
   })
 };
 
-var updateTask = function(id, task, callback) {
+var updateTask = function(id, task, user, callback) {
   connection.query(`UPDATE todo SET task = "${task}" WHERE id=${id}`, function (err, res) {
     if (err) {
       console.log(err)
       callback(err)
     } else {
-      connection.query(`SELECT * FROM todo`, function(error, response) {
+      connection.query(`SELECT * FROM todo where userID="${user}"`, function(error, response) {
         if (error) {
           console.log(error)
           callback(error)
@@ -106,13 +106,13 @@ var updateTask = function(id, task, callback) {
   })
 };
 
-var updateCat = function(id, cat, callback) {
+var updateCat = function(id, cat, user, callback) {
   connection.query(`UPDATE todo SET cat = "${cat}" WHERE id=${id}`, function (err, res) {
     if (err) {
       console.log(err)
       callback(err)
     } else {
-      connection.query(`SELECT * FROM todo`, function(error, response) {
+      connection.query(`SELECT * FROM todo where userID=${user}`, function(error, response) {
         if (error) {
           console.log(error)
           callback(error)
@@ -124,13 +124,13 @@ var updateCat = function(id, cat, callback) {
   })
 };
 
-var updateCompleted = function(id, comp, callback) {
+var updateCompleted = function(id, comp, user, callback) {
   connection.query(`UPDATE todo SET completed = "${comp}" WHERE id=${id}`, function (err, res) {
     if (err) {
       console.log(err)
       callback(err)
     } else {
-      connection.query(`SELECT * FROM todo`, function(error, response) {
+      connection.query(`SELECT * FROM todo where userID="${user}"`, function(error, response) {
         if (error) {
           console.log(error)
           callback(error)

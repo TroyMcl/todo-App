@@ -61,12 +61,12 @@ class App extends React.Component {
   }
 
   handleSubmit(event) {
-    let task = {value: this.state.value, cat: this.state.catValue}
+    let task = {value: this.state.value, cat: this.state.catValue, user: this.state.userId}
     task = JSON.stringify(task)
     console.log(task)
     $.ajax({
       type:'POST',
-      url: '/',
+      url: '/add',
       headers: { 'Content-type' : 'application/json'},
       data: task,
       success: (res => {
@@ -85,11 +85,12 @@ class App extends React.Component {
     let remove = element.dataset.str;
     let findTask = (obj) => `${obj.task}` === remove
     let index = this.state.tasks.findIndex(findTask)
+    let info = {id: this.state.tasks[index].id, user: this.state.userId}
     $.ajax({
       type:'DELETE',
       url: '/',
       headers: {'Content-type' : 'application/json'},
-      data: JSON.stringify(this.state.tasks[index]),
+      data: JSON.stringify(info),
       success: (res => {
         this.setState({
           tasks: res
@@ -109,7 +110,7 @@ class App extends React.Component {
   taskEdit(data) {
     let findTask = (obj) => `${obj.task}` === this.state.focusedValue;
     let index = this.state.tasks.findIndex(findTask)
-    let updateTask = { id: this.state.tasks[index].id, task: data }
+    let updateTask = { id: this.state.tasks[index].id, task: data, user: this.state.userId}
     console.log(updateTask)
     $.ajax({
       type:'PUT',
@@ -128,10 +129,10 @@ class App extends React.Component {
   catEdit(data) {
     let info = Object.entries(data)
     let task = info[0][0];
-    let newCat = info[0][1]
+    let newCat = info[0][1];
     let findTask = (obj) => `${obj.task}` === task;
     let index = this.state.tasks.findIndex(findTask)
-    let updateTask = { id: this.state.tasks[index].id, cat: newCat }
+    let updateTask = { id: this.state.tasks[index].id, cat: newCat, user: this.state.userId }
     $.ajax({
       type:'PUT',
       url: '/cat',
@@ -153,7 +154,7 @@ class App extends React.Component {
     let index = this.state.tasks.findIndex(findTask);
     let currCompStatus = this.state.tasks[index].completed;
     let data =  currCompStatus === 1 ? 0 : 1
-    let updateCompleted = { id: this.state.tasks[index].id, comp: data }
+    let updateCompleted = { id: this.state.tasks[index].id, comp: data, user: this.state.userId }
     $.ajax({
       type:'PUT',
       url: '/completed',
