@@ -1,0 +1,20 @@
+#tasks_table {
+  border-collapse: collapse;
+  width: 80%
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#table_head {
+  background-color: rgb(63, 118, 175);
+  color: white;
+  font-size: large;
+  text-align: center;
+}
+tr {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+#task_cell {
+  text-align: center;
+}

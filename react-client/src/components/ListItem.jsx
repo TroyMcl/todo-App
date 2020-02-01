@@ -12,14 +12,14 @@ const ListItem = (props) => (
         onFocusOut={props.taskEdit}
       />
     </td>
-    <td>
+    <td id="task_cell">
       <InlineEdit
         text={props.item.cat}
         paramName={props.item.task}
         change={props.catEdit}
       />
     </td>
-    <td data-comp={props.item.task} onClick={props.toggleComp}>
+    <td id="task_cell" data-comp={props.item.task} onClick={props.toggleComp}>
       {props.item.completed === 1 ? 'Yes' : 'Not Yet' }
       </td>
   </tr>
