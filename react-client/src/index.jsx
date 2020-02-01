@@ -7,7 +7,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: 'Mr. Test',
+      userId: 0,
+      user: '',
       tasks: [],
       value: '',
       catValue: '',
@@ -21,6 +22,31 @@ class App extends React.Component {
     this.focusOn = this.focusOn.bind(this);
     this.catEdit = this.catEdit.bind(this);
     this.toggleComp = this.toggleComp.bind(this);
+    this.addUser = this.addUser.bind(this);
+    this.getUser = this.getUser.bind(this);
+  }
+
+  addUser(e) {
+    this.setState({user: e.target.value})
+  }
+
+  getUser(e) {
+    e.preventDefault();
+    let userName = { user: this.state.user };
+    let stuff = JSON.stringify(userName)
+    console.log(stuff)
+    $.ajax({
+      type:'POST',
+      url: '/user',
+      headers: { 'Content-type' : 'application/json'},
+      data: stuff,
+      success: (res => {
+        this.setState({
+          userId: res.id
+        })
+      }),
+      dataType: 'JSON',
+    })
   }
 
   handleChange(event) {
@@ -158,6 +184,17 @@ class App extends React.Component {
   }
 
   render () {
+    if (this.state.userId === 0) {
+      return (
+        <form>
+          <label>
+            Please Enter Your User Name:
+            <input type="text" onChange={this.addUser}/>
+          </label>
+          <input type="submit" value="submit" onClick={this.getUser}/>
+        </form>
+      )
+    }
     return (<div>
       <h1>DATA Task Organizer</h1>
     <p>Welcome back <i><b>{this.state.user}</b></i></p>

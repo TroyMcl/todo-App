@@ -17,6 +17,27 @@ var selectAll = function(callback) {
   });
 };
 
+var findUser = function(user, callback) {
+  connection.query(`insert into users(user) select "${user}" from dual where not exists (select * from users where user="${user}")`, function(err, result) {
+    if(err) {
+      console.log(err)
+      callback(err)
+    } else {
+      if (result.insertId === 0) {
+        connection.query(`Select * from users where user="${user}"`, function (error, res) {
+          if (error) {
+            callback(error)
+          } else {
+            callback(null, {id: res[0].id})
+          }
+        })
+      } else {
+        callback(null, {id: result.insertId})
+      }
+    }
+  })
+}
+
 var selectDone = function(callback) {
   connection.query('SELECT * FROM todo WHERE completed = true', function(err, res) {
     if(err) {
@@ -29,7 +50,7 @@ var selectDone = function(callback) {
 };
 
 var addTask = function(callback, task, cat, completed) {
-  connection.query(`Insert into todo(task,cat,completed) Values ("${task}","${cat}", ${completed})`, function(err, results) {
+  connection.query(`Insert into todo(task,cat,completed,userID) Values ("${task}","${cat}", ${completed}, 1)`, function(err, results) {
     if(err) {
       console.log('error in insert', err)
       callback(err)
@@ -120,4 +141,5 @@ module.exports = {
   removeTask,
   updateCat,
   updateCompleted,
+  findUser,
 }

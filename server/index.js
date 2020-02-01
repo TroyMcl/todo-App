@@ -24,6 +24,17 @@ app.get('/items', function (req, res) {
   });
 });
 
+app.post('/user', function (req, res) {
+  let user = req.body.user
+  items.findUser(user,function (err, data) {
+    if(err) {
+      res.sendStatus(500)
+    } else {
+      res.json(data)
+    }
+  })
+})
+
 app.get('/completed', function (req, res) {
   //eventually get user num
   //call items method to query db for all tasks matching user and comp === true
