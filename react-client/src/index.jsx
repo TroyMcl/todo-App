@@ -10,9 +10,11 @@ class App extends React.Component {
       user: 'Mr. Test',
       tasks: [],
       value: '',
+      catValue: '',
       focusedValue: '',
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeCat = this.handleChangeCat.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.taskEdit = this.taskEdit.bind(this);
@@ -24,10 +26,15 @@ class App extends React.Component {
     this.setState({value: event.target.value})
   }
 
+  handleChangeCat(event) {
+    console.log(event.target.value)
+    this.setState({
+      catValue: event.target.value
+    })
+  }
+
   handleSubmit(event) {
-    event.preventDefault();
-    //run POST add new event to db & update state
-    let task = {value: this.state.value}
+    let task = {value: this.state.value, cat: this.state.catValue}
     task = JSON.stringify(task)
     console.log(task)
     $.ajax({
@@ -98,7 +105,6 @@ class App extends React.Component {
     let findTask = (obj) => `${obj.task}` === task;
     let index = this.state.tasks.findIndex(findTask)
     let updateTask = { id: this.state.tasks[index].id, cat: newCat }
-    console.log(updateTask)
     $.ajax({
       type:'PUT',
       url: '/cat',
@@ -136,6 +142,10 @@ class App extends React.Component {
       <label>
         Add Task:
         <input type="text" onChange={this.handleChange} />
+      </label>
+      <label>
+        Add Catagory:
+        <input type="text" onChange={this.handleChangeCat} />
       </label>
       <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>

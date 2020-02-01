@@ -38,7 +38,7 @@ app.get('/completed', function (req, res) {
 
 app.post('/', function(req,res) {
   let task = req.body.value;
-  let cat = 'stuff';
+  let cat = req.body.cat;
   let comp = false;
   items.addTask(function (err, data) {
     if(err) {
