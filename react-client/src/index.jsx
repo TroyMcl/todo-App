@@ -65,6 +65,7 @@ class App extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log(event.target)
     let task = {value: this.state.value, cat: this.state.catValue, user: this.state.userId}
     task = JSON.stringify(task)
     console.log(task)
@@ -81,6 +82,10 @@ class App extends React.Component {
       }),
       dataType: 'JSON',
     })
+    this.setState({
+      catValue: '',
+      value: ''
+    });
   }
 
   deleteTask(event) {
@@ -224,16 +229,16 @@ class App extends React.Component {
     return (<div>
       <h1>DATA Task Organizer</h1>
     <p>Welcome back <i><b>{this.state.user}</b></i></p>
-      <form>
-      <label>
-        Add Task:
-        <input type="text" onChange={this.handleChange} />
-      </label>
-      <label>
-        Add Catagory:
-        <input type="text" onChange={this.handleChangeCat} />
-      </label>
-      <input type="submit" value="ADD" onClick={this.handleSubmit}/>
+      <form id="main_form">
+        <label>
+          Add Task:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <label>
+          Add Catagory:
+          <input type="text" value={this.state.catValue} onChange={this.handleChangeCat} />
+        </label>
+        <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>
       <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit} toggleComp={this.toggleComp} organizeByHeader={this.organizeByHeader}/>
       <ul>Sort by:
