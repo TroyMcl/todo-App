@@ -14,16 +14,6 @@ app.use(bodyParser.json())
 // app.use(express.static(__dirname + '/../angular-client'));
 // app.use(express.static(__dirname + '/../node_modules'));
 
-// app.get('/items', function (req, res) {
-//   items.selectAll(function(err, data) {
-//     if(err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
-
 app.post('/user', function (req, res) {
   let user = req.body.user
   items.findUser(user,function (err, data) {
@@ -36,8 +26,6 @@ app.post('/user', function (req, res) {
 })
 
 app.get('/completed', function (req, res) {
-  //eventually get user num
-  //call items method to query db for all tasks matching user and comp === true
   items.selectDone(function (err, data) {
     if(err) {
       res.sendStatus(500)
@@ -99,6 +87,28 @@ app.put('/completed', function(req,res) {
     }
   })
 });
+
+app.post('/finished', function(req, res) {
+  let id = req.body.id;
+  items.getCompleted(id, function(err, data) {
+    if (err) {
+      res.sendStatus(500)
+    } else {
+      res.send(data)
+    }
+  })
+});
+
+app.post('/unfinished', function(req,res) {
+  let id = req.body.id;
+  items.getUnfinished(id, function(err, data) {
+    if (err) {
+      res.sendStatus(500)
+    } else {
+      res.send(data)
+    }
+  })
+})
 
 app.delete('/', function(req,res) {
   let id = req.body.id;

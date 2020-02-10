@@ -142,6 +142,28 @@ var updateCompleted = function(id, comp, user, callback) {
   })
 };
 
+var getCompleted = function(id, callback) {
+  connection.query(`Select * from todo WHERE userID=${id} AND completed=1`, function(error, response) {
+    if (error) {
+      console.log(error)
+      callback(error)
+    } else {
+      callback(null, response)
+    }
+  })
+}
+
+var getUnfinished = function(id, callback) {
+  connection.query(`Select * from todo WHERE userID=${id} AND completed=0`, function (error, response) {
+    if (error) {
+      console.log(error)
+      callback(error)
+    } else {
+      callback(null, response)
+    }
+  })
+}
+
 var removeTask = function(id, callback) {
   connection.query(`DELETE from todo WHERE id=${id}`, function (err, res) {
     if (err) {
@@ -162,4 +184,6 @@ module.exports = {
   updateCat,
   updateCompleted,
   findUser,
+  getCompleted,
+  getUnfinished,
 }

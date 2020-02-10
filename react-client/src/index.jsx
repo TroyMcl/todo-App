@@ -24,6 +24,9 @@ class App extends React.Component {
     this.toggleComp = this.toggleComp.bind(this);
     this.addUser = this.addUser.bind(this);
     this.getUser = this.getUser.bind(this);
+    this.organizeByHeader = this.organizeByHeader.bind(this);
+    this.getFinished = this.getFinished.bind(this);
+    this.getUnfinished = this.getUnfinished.bind(this);
   }
 
   addUser(e) {
@@ -61,6 +64,7 @@ class App extends React.Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     let task = {value: this.state.value, cat: this.state.catValue, user: this.state.userId}
     task = JSON.stringify(task)
     console.log(task)
@@ -169,10 +173,46 @@ class App extends React.Component {
     })
   }
 
+  organizeByHeader(e) {
+    console.log(e.target.textContent)
+  }
+
+  getFinished(e) {
+    let user = {id: this.state.userId}
+  $.ajax({
+    type: 'Post',
+    url: '/finished',
+    headers: {'Content-type' : 'application/json'},
+    data: JSON.stringify(user),
+    success: (res => {
+      this.setState({
+        tasks: res
+      })
+    }),
+    dataType: 'JSON'
+  })
+  }
+
+  getUnfinished(e) {
+    let user = {id: this.state.userId}
+  $.ajax({
+    type: 'Post',
+    url: '/unfinished',
+    headers: {'Content-type' : 'application/json'},
+    data: JSON.stringify(user),
+    success: (res => {
+      this.setState({
+        tasks: res
+      })
+    }),
+    dataType: 'JSON'
+  })
+  }
+
   render () {
     if (this.state.userId === 0) {
       return (
-        <form>
+        <form id="tasks_form">
           <label>
             Please Enter Your User Name:
             <input type="text" onChange={this.addUser}/>
@@ -195,7 +235,12 @@ class App extends React.Component {
       </label>
       <input type="submit" value="ADD" onClick={this.handleSubmit}/>
       </form>
-      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit} toggleComp={this.toggleComp}/>
+      <List items={this.state.tasks} remove={this.deleteTask} taskEdit={this.taskEdit} focusOn={this.focusOn} catEdit={this.catEdit} toggleComp={this.toggleComp} organizeByHeader={this.organizeByHeader}/>
+      <ul>Sort by:
+        <li onClick={this.getUser}>All</li>
+        <li onClick={this.getFinished}>Finished</li>
+        <li onClick={this.getUnfinished}>Unfinished</li>
+      </ul>
     </div>)
   }
 }
