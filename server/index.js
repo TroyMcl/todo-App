@@ -14,6 +14,17 @@ app.use(bodyParser.json())
 // app.use(express.static(__dirname + '/../angular-client'));
 // app.use(express.static(__dirname + '/../node_modules'));
 
+app.get('/user/:id', (req, res) => {
+  const id = req.params.id;
+  items.selectAll(id)
+  .then(todos => {
+    res.json(todos);
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
 app.post('/user', function (req, res) {
   let user = req.body.user
   items.findUser(user,function (err, data) {

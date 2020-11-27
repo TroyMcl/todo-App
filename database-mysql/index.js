@@ -1,21 +1,34 @@
 var mysql = require('mysql');
+const { promisify } = require('util');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : null,
+  password : 'password',
   database : 'todos'
 });
 
-var selectAll = function(user, callback) {
-  connection.query(`SELECT * FROM todo where userID = "${user}"`, function(err, results, fields) {
-    if(err) {
-      callback(err, null);
-    } else {
-      callback(null, results);
-    }
-  });
-};
+const queryPromise = promisify(connection.query).bind(connection);
+
+const selectAll = (user) => {
+  return queryPromise('SELECT * FROM todo WHERE userID = ?', [user])
+        .then(todos => {
+          return todos;
+        })
+        .catch(err => {
+          throw err;
+        })
+}
+
+// var selectAll = function(user, callback) {
+//   connection.query(`SELECT * FROM todo where userID = "${user}"`, function(err, results, fields) {
+//     if(err) {
+//       callback(err, null);
+//     } else {
+//       callback(null, results);
+//     }
+//   });
+// };
 
 var findUser = function(user, callback) {
   let info = {}
