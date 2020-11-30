@@ -10,9 +10,9 @@ Each user is tracked in the user table, only the current users tasks are visible
 
 ### Tables and API Routes
 
-![User table and Todo table schema](./images/tables.jpg)
+![User table and Todo table schema](./images/tables.jpeg)
 
 > This was one of my early Full Stack applications, so endpoint naming is a bit rough
 
-![Appliation API's](./images/tables.jpg)
+![Appliation API's](./images/routes.jpeg)
 
